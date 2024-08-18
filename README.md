@@ -1,3 +1,3 @@
-# engine_template_csharp
+# oo_boot_camp_2024-08-19_csharp
 
-Skeleton for starting a new C# project
+Class for India client, August-September 2024
