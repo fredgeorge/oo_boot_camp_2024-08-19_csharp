@@ -17,5 +17,6 @@ public class RectangleTest
     public void Area()
     {
         Assert.Equal(24.0, new Rectangle(4.0, 6.0).Area());
+        Assert.Equal(28.0, new Rectangle(4, 7).Area());
     }
 }
