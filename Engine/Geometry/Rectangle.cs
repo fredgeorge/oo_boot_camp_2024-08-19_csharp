@@ -12,6 +12,7 @@ public class Rectangle {
     private readonly double _width;
 
     public Rectangle(double length, double width) {
+        if (length <= 0 || width <= 0) throw new ArgumentException("Invalid dimension(s)");
         _length = length;
         _width = width;
     }

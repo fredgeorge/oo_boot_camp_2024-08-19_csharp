@@ -19,4 +19,10 @@ public class RectangleTest
         Assert.Equal(24.0, new Rectangle(4.0, 6.0).Area());
         Assert.Equal(28.0, new Rectangle(4, 7).Area());
     }
+
+    [Fact]
+    public void Parameters() {
+        Assert.Throws<ArgumentException>(() => new Rectangle(0, 6));
+        Assert.Throws<ArgumentException>(() => new Rectangle(4, 0));
+    }
 }
