@@ -20,4 +20,8 @@ public class Rectangle {
     public double Area() {
         return _length * _width;
     }
+
+    public double Perimeter() {
+        return 2 * (_length + _width);
+    }
 }
