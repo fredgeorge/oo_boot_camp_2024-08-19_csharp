@@ -6,6 +6,7 @@
 
 using System.Collections.Generic;
 using Engine.Probability;
+using Engine.Probability.Extensions;
 using Xunit;
 
 namespace Engine.Tests.Unit;
@@ -14,20 +15,20 @@ namespace Engine.Tests.Unit;
 public class ChanceTest {
     [Fact]
     public void Equality() {
-        Assert.Equal(new Chance(0.75), new Chance(0.75));
-        Assert.NotEqual(new Chance(0.75), new Chance(0.25));
-        Assert.NotEqual(new Chance(0.75), new object());
-        Assert.NotEqual(new Chance(0.75), null);
+        Assert.Equal(0.75.Chance(), 0.75.Chance());
+        Assert.NotEqual(0.75.Chance(), 0.25.Chance());
+        Assert.NotEqual(0.75.Chance(), new object());
+        Assert.NotEqual(0.75.Chance(), null);
     }
 
     [Fact]
     public void Set() {
-        Assert.Single(new HashSet<Chance> { new Chance(0.75), new Chance(0.75) });
-        Assert.Contains(new Chance(0.75), new HashSet<Chance> { new Chance(0.75) });
+        Assert.Single(new HashSet<Chance> { 0.75.Chance(), 0.75.Chance() });
+        Assert.Contains(0.75.Chance(), new HashSet<Chance> { 0.75.Chance() });
     }
 
     [Fact]
     public void Hash() {
-        Assert.Equal(new Chance(0.75).GetHashCode(), new Chance(0.75).GetHashCode());
+        Assert.Equal(0.75.Chance().GetHashCode(), 0.75.Chance().GetHashCode());
     }
 }
