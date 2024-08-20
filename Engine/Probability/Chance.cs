@@ -4,6 +4,8 @@
  * @author Fred George  fredgeorge@acm.org
  */
 
+using System.Runtime.CompilerServices;
+
 namespace Engine.Probability {
     
     // Understands the likelihood of something specific happening
@@ -29,12 +31,16 @@ namespace Engine.Probability {
         public Chance Not() => new(CertainFraction - _fraction);
 
         public static Chance operator !(Chance c) => c.Not();
+
+        public Chance And(Chance other) => new(this._fraction * other._fraction);
+
+        public static Chance operator &(Chance left, Chance right) => left.And(right);
     }
 }
 
 namespace Engine.Probability.Extensions {
     public static class ChanceExtensions {
-        public static Chance Chance(this double fraction) => new Chance(fraction);
-        public static Chance Chance(this int fraction) => new Chance(fraction);
+        public static Chance Chance(this double fraction) => new(fraction);
+        public static Chance Chance(this int fraction) => new(fraction);
     }
 }

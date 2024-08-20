@@ -42,4 +42,14 @@ public class ChanceTest {
         Assert.Equal(1.Chance(), !0.Chance());
         Assert.Equal(0.3.Chance(), !!0.3.Chance());
     }
+
+    [Fact]
+    public void And()
+    {
+        Assert.Equal(0.25.Chance(), 0.5.Chance() & 0.5.Chance());
+        Assert.Equal(0.1875.Chance(), 0.75.Chance() & 0.25.Chance());
+        Assert.Equal(0.25.Chance().And(0.75.Chance()), 0.75.Chance() & 0.25.Chance());
+        Assert.Equal(0.75.Chance(), 0.75.Chance() & 1.Chance());
+        Assert.Equal(0.Chance(), 0.Chance() & 0.75.Chance());
+    }
 }
