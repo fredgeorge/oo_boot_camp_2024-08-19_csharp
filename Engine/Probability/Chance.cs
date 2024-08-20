@@ -4,7 +4,7 @@
  * @author Fred George  fredgeorge@acm.org
  */
 
-using System.Runtime.CompilerServices;
+// ReSharper disable ArrangeThisQualifier
 
 namespace Engine.Probability {
     
@@ -35,6 +35,11 @@ namespace Engine.Probability {
         public Chance And(Chance other) => new(this._fraction * other._fraction);
 
         public static Chance operator &(Chance left, Chance right) => left.And(right);
+
+        // DeMorgan's Law: https://en.wikipedia.org/wiki/De_Morgan%27s_laws
+        public Chance Or(Chance other) => !(!this & !other);
+
+        public static Chance operator |(Chance left, Chance right) => left.Or(right);
     }
 }
 

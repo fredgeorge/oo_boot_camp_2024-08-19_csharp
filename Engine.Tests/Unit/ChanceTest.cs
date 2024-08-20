@@ -18,7 +18,9 @@ public class ChanceTest {
         Assert.Equal(0.75.Chance(), 0.75.Chance());
         Assert.NotEqual(0.75.Chance(), 0.25.Chance());
         Assert.NotEqual(0.75.Chance(), new object());
+#pragma warning disable xUnit2000
         Assert.NotEqual(0.75.Chance(), null);
+#pragma warning restore xUnit2000
     }
 
     [Fact]
@@ -51,5 +53,15 @@ public class ChanceTest {
         Assert.Equal(0.25.Chance().And(0.75.Chance()), 0.75.Chance() & 0.25.Chance());
         Assert.Equal(0.75.Chance(), 0.75.Chance() & 1.Chance());
         Assert.Equal(0.Chance(), 0.Chance() & 0.75.Chance());
+    }
+        
+    [Fact]
+    public void Or()
+    {
+        Assert.Equal(0.75.Chance(), 0.5.Chance() | 0.5.Chance());
+        Assert.Equal(0.8125.Chance(), 0.75.Chance() | 0.25.Chance());
+        Assert.Equal(0.25.Chance().Or(0.75.Chance()), 0.75.Chance() | 0.25.Chance());
+        Assert.Equal(1.Chance(), 0.75.Chance() | 1.Chance());
+        Assert.Equal(0.75.Chance(), 0.Chance() | 0.75.Chance());
     }
 }
