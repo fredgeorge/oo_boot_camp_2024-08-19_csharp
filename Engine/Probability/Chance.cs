@@ -16,6 +16,8 @@ namespace Engine.Probability {
         private readonly double _fraction;
 
         internal Chance(double likelihoodAsFraction) {
+            if (likelihoodAsFraction < 0.0 || likelihoodAsFraction > CertainFraction)
+                throw new ArgumentException("Chance value must be between 0.0 and 1.0, inclusive");
             _fraction = likelihoodAsFraction;
         }
     

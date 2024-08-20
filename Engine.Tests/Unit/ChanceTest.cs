@@ -4,6 +4,7 @@
  * @author Fred George  fredgeorge@acm.org
  */
 
+using System;
 using System.Collections.Generic;
 using Engine.Probability;
 using Engine.Probability.Extensions;
@@ -63,5 +64,11 @@ public class ChanceTest {
         Assert.Equal(0.25.Chance().Or(0.75.Chance()), 0.75.Chance() | 0.25.Chance());
         Assert.Equal(1.Chance(), 0.75.Chance() | 1.Chance());
         Assert.Equal(0.75.Chance(), 0.Chance() | 0.75.Chance());
+    }
+
+    [Fact]
+    public void InvalidFractions() {
+        Assert.Throws<ArgumentException>(() => (-0.1).Chance());
+        Assert.Throws<ArgumentException>(() => 1.1.Chance());
     }
 }
