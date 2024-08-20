@@ -30,6 +30,7 @@ public class ChanceTest {
     [Fact]
     public void Hash() {
         Assert.Equal(0.75.Chance().GetHashCode(), 0.75.Chance().GetHashCode());
+        Assert.Equal(0.3.Chance().GetHashCode(), (!!0.3.Chance()).GetHashCode());
     }
 
     [Fact]
@@ -39,5 +40,6 @@ public class ChanceTest {
         Assert.Equal(0.75.Chance(), 0.75.Chance().Not().Not());
         Assert.Equal(0.Chance(), !1.Chance());
         Assert.Equal(1.Chance(), !0.Chance());
+        Assert.Equal(0.3.Chance(), !!0.3.Chance());
     }
 }
