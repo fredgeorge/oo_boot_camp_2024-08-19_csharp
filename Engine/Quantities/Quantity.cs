@@ -7,15 +7,22 @@
 namespace Engine.Quantities;
 
 // Understands a specific measurement
-public class Quantity(double amount, Unit unit) {
-    private readonly double _amount = amount;
-    private readonly Unit _unit = unit;
+public class Quantity {
+    private readonly double _amount;
+    private readonly Unit _unit;
+    
+    internal Quantity(double amount, Unit unit) {
+        _amount = amount;
+        _unit = unit;
+    }
 
     public override bool Equals(object? obj) => 
         this == obj || obj is Quantity other && Equals(other);
     
-    private bool Equals(Quantity other) => 
-        this._unit == other._unit && this._amount == other._amount;
-    
-    public override int GetHashCode() => HashCode.Combine(_amount, _unit);
+    private bool Equals(Quantity other) => this._amount == ConvertedAmount(other);
+
+    private double ConvertedAmount(Quantity other) => 
+        this._unit.ConvertedAmount(other._amount, other._unit);
+
+    public override int GetHashCode() => _unit.HashCode(_amount);
 }

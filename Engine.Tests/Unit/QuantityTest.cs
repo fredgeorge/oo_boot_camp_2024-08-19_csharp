@@ -6,8 +6,8 @@
 
 using System.Collections.Generic;
 using Engine.Quantities;
+using ExtensionMethods.Probability.Quantities;
 using Xunit;
-using static Engine.Quantities.Unit;
 
 namespace Engine.Tests.Unit;
 
@@ -15,25 +15,28 @@ namespace Engine.Tests.Unit;
 public class QuantityTest {
     [Fact]
     public void EqualityOfLikeUnits() {
-        Assert.Equal(new Quantity(8.0, Tablespoon), new Quantity(8.0, Tablespoon));
-        Assert.NotEqual(new Quantity(8, Tablespoon), new Quantity(6.0, Tablespoon));
-        Assert.NotEqual(new Quantity(8, Tablespoon), new object());
-        Assert.NotEqual(new Quantity(8, Tablespoon), null);
+        Assert.Equal(8.0.Tablespoons(), 8.0.Tablespoons());
+        Assert.NotEqual(8.Tablespoons(), 6.0.Tablespoons());
+        Assert.NotEqual(8.Tablespoons(), new object());
+        Assert.NotEqual(8.Tablespoons(), null);
     }
 
     [Fact]
     public void EqualityOfDifferentUnits() {
-        Assert.NotEqual(new Quantity(8.0, Tablespoon), new Quantity(8.0, Pint));
+        Assert.NotEqual(8.0.Tablespoons(), 8.0.Pints());
+        Assert.Equal(8.Tablespoons(), 0.5.Cups());
+        Assert.Equal(768.Teaspoons(), 1.Gallons());
     }
 
     [Fact]
     public void Set() {
-        Assert.Single(new HashSet<Quantity> { new Quantity(8.0, Tablespoon), new Quantity(8.0, Tablespoon) });
-        Assert.Contains(new Quantity(8.0, Tablespoon), new HashSet<Quantity> { new Quantity(8.0, Tablespoon) });
+        Assert.Single(new HashSet<Quantity> { 8.0.Tablespoons(), 8.0.Tablespoons() });
+        Assert.Contains(8.0.Tablespoons(), new HashSet<Quantity> { 8.0.Tablespoons() });
     }
 
     [Fact]
     public void Hash() {
-        Assert.Equal(new Quantity(8.0, Tablespoon).GetHashCode(), new Quantity(8.0, Tablespoon).GetHashCode());
+        Assert.Equal(8.0.Tablespoons().GetHashCode(), 8.0.Tablespoons().GetHashCode());
+        Assert.Equal(8.Tablespoons().GetHashCode(), 0.5.Cups().GetHashCode());
     }
 }
