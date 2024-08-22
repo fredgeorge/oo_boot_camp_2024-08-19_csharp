@@ -6,8 +6,6 @@
 
 // ReSharper disable ArrangeThisQualifier
 
-using System.Transactions;
-
 namespace Engine.Quantities;
 
 // Understands a specific measurement

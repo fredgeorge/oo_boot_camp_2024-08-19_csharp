@@ -8,6 +8,8 @@ namespace Engine.Geometry;
 
 // Understands a polygon with four sides at right angles
 public class Rectangle {
+    public static Rectangle Square(double side) => new(side, side);
+    
     private readonly double _length;
     private readonly double _width;
 
