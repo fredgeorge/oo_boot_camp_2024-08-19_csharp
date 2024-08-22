@@ -35,8 +35,8 @@ public class QuantityTest {
 
     [Fact]
     public void Set() {
-        Assert.Single(new HashSet<Quantity> { 8.0.Tablespoons(), 8.0.Tablespoons() });
-        Assert.Contains(8.0.Tablespoons(), new HashSet<Quantity> { 8.0.Tablespoons() });
+        Assert.Single(new HashSet<RatioQuantity> { 8.0.Tablespoons(), 8.0.Tablespoons() });
+        Assert.Contains(8.0.Tablespoons(), new HashSet<RatioQuantity> { 8.0.Tablespoons() });
     }
 
     [Fact]
@@ -74,7 +74,14 @@ public class QuantityTest {
         AssertBidirectionalEquality((-40).Celsius(), (-40).Fahrenheit());
     }
 
-    private void AssertBidirectionalEquality(Quantity left, Quantity right) {
+    [Fact]
+    public void TemperatureArithmetic() {
+        // The following should not even compile
+        // var plusQ = 10.Celsius() + 50.Fahrenheit();
+        // var negateQ = -50.Fahrenheit();
+    }
+
+    private void AssertBidirectionalEquality(IntervalQuantity left, IntervalQuantity right) {
         Assert.Equal(left, right);
         Assert.Equal(right, left);
     }
