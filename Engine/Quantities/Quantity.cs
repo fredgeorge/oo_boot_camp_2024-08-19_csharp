@@ -9,6 +9,8 @@ namespace Engine.Quantities;
 
 // Understands a specific measurement
 public class Quantity {
+    internal const double Epsilon = 1e-10;
+    
     private readonly double _amount;
     private readonly Unit _unit;
     
@@ -21,9 +23,9 @@ public class Quantity {
         this == obj || obj is Quantity other && Equals(other);
     
     private bool Equals(Quantity other) => 
-        this.isCompatible(other) && this._amount == ConvertedAmount(other);
+        this.IsCompatible(other) && Math.Abs(this._amount - ConvertedAmount(other)) < Epsilon;
 
-    private bool isCompatible(Quantity other) => this._unit.isCompatible(other._unit);
+    private bool IsCompatible(Quantity other) => this._unit.IsCompatible(other._unit);
 
     private double ConvertedAmount(Quantity other) => 
         this._unit.ConvertedAmount(other._amount, other._unit);

@@ -51,15 +51,14 @@ namespace Engine.Quantities {
         }
 
         internal double ConvertedAmount(double otherAmount, Unit other) {
-            if (!this.isCompatible(other)) throw new ArgumentException("Incompatible Units for arithmetic");
+            if (!this.IsCompatible(other)) throw new ArgumentException("Incompatible Units for arithmetic");
             return (otherAmount - other._offset) * other._baseUnitRatio / this._baseUnitRatio + this._offset;
         }
 
-        internal int HashCode(double amount) {
-            return ((amount - _offset) * _baseUnitRatio).GetHashCode();
-        }
+        internal int HashCode(double amount) => 
+            Math.Round((amount - _offset) * _baseUnitRatio / Quantity.Epsilon).GetHashCode();
 
-        internal bool isCompatible(Unit other) => this._baseUnit == other._baseUnit;
+        internal bool IsCompatible(Unit other) => this._baseUnit == other._baseUnit;
     }
 }
 
