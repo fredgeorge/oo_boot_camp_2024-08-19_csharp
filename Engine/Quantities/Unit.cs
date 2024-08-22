@@ -5,6 +5,7 @@
  */
 
 using Engine.Quantities;
+
 // ReSharper disable ArrangeThisQualifier
 
 namespace Engine.Quantities {
@@ -27,26 +28,35 @@ namespace Engine.Quantities {
         internal static readonly Unit Mile = new(8, Furlong);
         internal static readonly Unit League = new(3, Mile);
 
+        internal static readonly Unit Celsius = new();
+        internal static readonly Unit Fahrenheit = new(5 / 9.0, 32, Celsius);
+
         private readonly Unit _baseUnit;
         private readonly double _baseUnitRatio;
-    
+        private readonly double _offset;
+
         private Unit() {
             _baseUnit = this;
             _baseUnitRatio = 1.0;
+            _offset = 0.0;
         }
 
-        private Unit(double relativeRatio, Unit relativeUnit) {
+        private Unit(double relativeRatio, Unit relativeUnit)
+            : this(relativeRatio, 0.0, relativeUnit) { }
+
+        private Unit(double relativeRatio, double offset, Unit relativeUnit) {
             _baseUnit = relativeUnit._baseUnit;
             _baseUnitRatio = relativeUnit._baseUnitRatio * relativeRatio;
+            _offset = offset;
         }
 
         internal double ConvertedAmount(double otherAmount, Unit other) {
             if (!this.isCompatible(other)) throw new ArgumentException("Incompatible Units for arithmetic");
-            return otherAmount * other._baseUnitRatio / this._baseUnitRatio;
+            return (otherAmount - other._offset) * other._baseUnitRatio / this._baseUnitRatio + this._offset;
         }
 
         internal int HashCode(double amount) {
-            return (amount * _baseUnitRatio).GetHashCode();
+            return ((amount - _offset) * _baseUnitRatio).GetHashCode();
         }
 
         internal bool isCompatible(Unit other) => this._baseUnit == other._baseUnit;
@@ -69,7 +79,7 @@ namespace ExtensionMethods.Probability.Quantities {
         public static Quantity Quarts(this int amount) => new(amount, Unit.Quart);
         public static Quantity Gallons(this double amount) => new(amount, Unit.Gallon);
         public static Quantity Gallons(this int amount) => new(amount, Unit.Gallon);
-        
+
         public static Quantity Inches(this double amount) => new Quantity(amount, Unit.Inch);
         public static Quantity Inches(this int amount) => new Quantity(amount, Unit.Inch);
         public static Quantity Feet(this double amount) => new Quantity(amount, Unit.Foot);
@@ -87,5 +97,9 @@ namespace ExtensionMethods.Probability.Quantities {
         public static Quantity Leagues(this double amount) => new Quantity(amount, Unit.League);
         public static Quantity Leagues(this int amount) => new Quantity(amount, Unit.League);
 
+        public static Quantity Celsius(this double amount) => new Quantity(amount, Unit.Celsius);
+        public static Quantity Celsius(this int amount) => new Quantity(amount, Unit.Celsius);
+        public static Quantity Fahrenheit(this double amount) => new Quantity(amount, Unit.Fahrenheit);
+        public static Quantity Fahrenheit(this int amount) => new Quantity(amount, Unit.Fahrenheit);
     }
 }
