@@ -17,6 +17,15 @@ namespace Engine.Quantities {
         internal static readonly Unit Quart = new(2, Pint);
         internal static readonly Unit Gallon = new(4, Quart);
 
+        internal static readonly Unit Inch = new();
+        internal static readonly Unit Foot = new(12, Inch);
+        internal static readonly Unit Yard = new(3, Foot);
+        internal static readonly Unit Fathom = new(6, Foot);
+        internal static readonly Unit Chain = new(22, Yard);
+        internal static readonly Unit Furlong = new(10, Chain);
+        internal static readonly Unit Mile = new(8, Furlong);
+        internal static readonly Unit League = new(3, Mile);
+
         private readonly double _baseUnitRatio;
     
         private Unit() {
@@ -52,5 +61,23 @@ namespace ExtensionMethods.Probability.Quantities {
         public static Quantity Quarts(this int amount) => new(amount, Unit.Quart);
         public static Quantity Gallons(this double amount) => new(amount, Unit.Gallon);
         public static Quantity Gallons(this int amount) => new(amount, Unit.Gallon);
+        
+        public static Quantity Inches(this double amount) => new Quantity(amount, Unit.Inch);
+        public static Quantity Inches(this int amount) => new Quantity(amount, Unit.Inch);
+        public static Quantity Feet(this double amount) => new Quantity(amount, Unit.Foot);
+        public static Quantity Feet(this int amount) => new Quantity(amount, Unit.Foot);
+        public static Quantity Yards(this double amount) => new Quantity(amount, Unit.Yard);
+        public static Quantity Yards(this int amount) => new Quantity(amount, Unit.Yard);
+        public static Quantity Fathoms(this double amount) => new Quantity(amount, Unit.Fathom);
+        public static Quantity Fathoms(this int amount) => new Quantity(amount, Unit.Fathom);
+        public static Quantity Chains(this double amount) => new Quantity(amount, Unit.Chain);
+        public static Quantity Chains(this int amount) => new Quantity(amount, Unit.Chain);
+        public static Quantity Furlongs(this double amount) => new Quantity(amount, Unit.Furlong);
+        public static Quantity Furlongs(this int amount) => new Quantity(amount, Unit.Furlong);
+        public static Quantity Miles(this double amount) => new Quantity(amount, Unit.Mile);
+        public static Quantity Miles(this int amount) => new Quantity(amount, Unit.Mile);
+        public static Quantity Leagues(this double amount) => new Quantity(amount, Unit.League);
+        public static Quantity Leagues(this int amount) => new Quantity(amount, Unit.League);
+
     }
 }
