@@ -5,6 +5,7 @@
  */
 
 using Engine.Quantities;
+// ReSharper disable ArrangeThisQualifier
 
 namespace Engine.Quantities {
     // Understands a specific metric
@@ -26,22 +27,29 @@ namespace Engine.Quantities {
         internal static readonly Unit Mile = new(8, Furlong);
         internal static readonly Unit League = new(3, Mile);
 
+        private readonly Unit _baseUnit;
         private readonly double _baseUnitRatio;
     
         private Unit() {
+            _baseUnit = this;
             _baseUnitRatio = 1.0;
         }
 
         private Unit(double relativeRatio, Unit relativeUnit) {
+            _baseUnit = relativeUnit._baseUnit;
             _baseUnitRatio = relativeUnit._baseUnitRatio * relativeRatio;
         }
 
-        internal double ConvertedAmount(double otherAmount, Unit other) => 
-            otherAmount * other._baseUnitRatio / this._baseUnitRatio;
+        internal double ConvertedAmount(double otherAmount, Unit other) {
+            if (!this.isCompatible(other)) throw new ArgumentException("Incompatible Units for arithmetic");
+            return otherAmount * other._baseUnitRatio / this._baseUnitRatio;
+        }
 
         internal int HashCode(double amount) {
             return (amount * _baseUnitRatio).GetHashCode();
         }
+
+        internal bool isCompatible(Unit other) => this._baseUnit == other._baseUnit;
     }
 }
 

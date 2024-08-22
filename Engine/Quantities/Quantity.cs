@@ -4,6 +4,7 @@
  * @author Fred George  fredgeorge@acm.org
  */
 
+// ReSharper disable ArrangeThisQualifier
 namespace Engine.Quantities;
 
 // Understands a specific measurement
@@ -19,7 +20,10 @@ public class Quantity {
     public override bool Equals(object? obj) => 
         this == obj || obj is Quantity other && Equals(other);
     
-    private bool Equals(Quantity other) => this._amount == ConvertedAmount(other);
+    private bool Equals(Quantity other) => 
+        this.isCompatible(other) && this._amount == ConvertedAmount(other);
+
+    private bool isCompatible(Quantity other) => this._unit.isCompatible(other._unit);
 
     private double ConvertedAmount(Quantity other) => 
         this._unit.ConvertedAmount(other._amount, other._unit);
