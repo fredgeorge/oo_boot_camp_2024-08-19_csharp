@@ -10,9 +10,9 @@ namespace Engine.Quantities;
 // Understands a specific measurement
 public class IntervalQuantity {
     internal const double Epsilon = 1e-10;
-    
-    private readonly double _amount;
-    private readonly Unit _unit;
+
+    protected readonly double _amount;
+    protected readonly Unit _unit;
     
     internal IntervalQuantity(double amount, Unit unit) {
         _amount = amount;
@@ -27,7 +27,7 @@ public class IntervalQuantity {
 
     private bool IsCompatible(IntervalQuantity other) => this._unit.IsCompatible(other._unit);
 
-    private double ConvertedAmount(IntervalQuantity other) => 
+    protected double ConvertedAmount(IntervalQuantity other) => 
         this._unit.ConvertedAmount(other._amount, other._unit);
 
     public override int GetHashCode() => _unit.HashCode(_amount);
