@@ -25,4 +25,11 @@ public class Quantity {
         this._unit.ConvertedAmount(other._amount, other._unit);
 
     public override int GetHashCode() => _unit.HashCode(_amount);
+    
+    public static Quantity operator +(Quantity left, Quantity right) => 
+        new(left._amount + left.ConvertedAmount(right), left._unit);
+    
+    public static Quantity operator -(Quantity q) => new(-q._amount, q._unit);
+
+    public static Quantity operator -(Quantity left, Quantity right) => left + -right;
 }
