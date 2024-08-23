@@ -13,10 +13,11 @@ public class Node {
     
     private readonly List<Link> _links = new();
 
-    public bool CanReach(Node destination) => HopCount(destination, NoVisitedNodes) != Unreachable;
+    public bool CanReach(Node destination) => 
+        Cost(destination, NoVisitedNodes, Link.LeastCost) != Unreachable;
 
     public int HopCount(Node destination) {
-        var result = HopCount(destination, NoVisitedNodes);
+        var result = Cost(destination, NoVisitedNodes, Link.FewestHops);
         if (result == Unreachable) throw new ArgumentException("Destination is unreachable");
         return (int)result;
     }
@@ -25,12 +26,6 @@ public class Node {
         var result = Cost(destination, NoVisitedNodes, Link.LeastCost);
         if (result == Unreachable) throw new ArgumentException("Destination is unreachable");
         return result;
-    }
-
-    internal double HopCount(Node destination, List<Node> visitedNodes) {
-        if (this == destination) return 0.0;
-        if (visitedNodes.Contains(this) || _links.Count == 0) return Unreachable;
-        return _links.Min(n => n.HopCount(destination, CopyWithThis(visitedNodes)));
     }
 
     internal double Cost(Node destination, List<Node> visitedNodes, Link.CostStrategy strategy) {
