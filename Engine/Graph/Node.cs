@@ -9,6 +9,8 @@ namespace Engine.Graph;
 // Understands its neighbors
 public class Node {
     private const int Unreachable = -1;
+    private static readonly List<Node> NoVisitedNodes = new();
+    
     private readonly List<Node> _neighbors = new();
 
     public Node To(Node neighbor) {
@@ -16,10 +18,10 @@ public class Node {
         return neighbor;
     }
 
-    public bool CanReach(Node destination) => HopCount(destination, NoVisitedNodes()) != Unreachable;
+    public bool CanReach(Node destination) => HopCount(destination, NoVisitedNodes) != Unreachable;
 
     public int HopCount(Node destination) {
-        var result = HopCount(destination, NoVisitedNodes());
+        var result = HopCount(destination, NoVisitedNodes);
         if (result == Unreachable) throw new ArgumentException("Destination is unreachable");
         return result;
     }
@@ -27,15 +29,14 @@ public class Node {
     private int HopCount(Node destination, List<Node> visitedNodes) {
         if (this == destination) return 0;
         if (visitedNodes.Contains(this)) return Unreachable;
-        visitedNodes.Add(this);
         var champion = Unreachable;
         foreach (var n in _neighbors) {
-            var challenger = n.HopCount(destination, visitedNodes);
+            var challenger = n.HopCount(destination, CopyWithThis(visitedNodes));
             if (challenger == Unreachable) continue;
             if (champion == Unreachable || challenger + 1 < champion) champion = challenger + 1;
         }
         return champion;
     }
-
-    private List<Node> NoVisitedNodes() => new();
+    
+    private List<Node> CopyWithThis(List<Node> originals) => new(originals) { this };
 }
