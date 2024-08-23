@@ -31,7 +31,7 @@ public class RectangleTest
     [Fact]
     public void ValidDimensions() {
         Assert.Throws<ArgumentException>(() => new Rectangle(0, 6.0));
-        Assert.Throws<ArgumentException>(() => new Rectangle(4.00, 0));
+        Assert.Throws<ArgumentException>(() => new Rectangle(4.0, 0));
         Assert.Throws<ArgumentException>(() => Rectangle.Square(0.0));
     }
 }
