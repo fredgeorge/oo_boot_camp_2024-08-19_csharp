@@ -28,11 +28,13 @@ public class Node {
         if (this == destination) return 0;
         if (visitedNodes.Contains(this)) return Unreachable;
         visitedNodes.Add(this);
+        var champion = Unreachable;
         foreach (var n in _neighbors) {
-            var result = n.HopCount(destination, visitedNodes);
-            if (result != Unreachable) return result + 1;
+            var challenger = n.HopCount(destination, visitedNodes);
+            if (challenger == Unreachable) continue;
+            if (champion == Unreachable || challenger + 1 < champion) champion = challenger + 1;
         }
-        return Unreachable;
+        return champion;
     }
 
     private List<Node> NoVisitedNodes() => new();
