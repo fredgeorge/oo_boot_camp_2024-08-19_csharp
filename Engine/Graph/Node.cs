@@ -16,14 +16,12 @@ public class Node {
     public bool CanReach(Node destination) => 
         Cost(destination, NoVisitedNodes, Link.LeastCost) != Unreachable;
 
-    public int HopCount(Node destination) {
-        var result = Cost(destination, NoVisitedNodes, Link.FewestHops);
-        if (result == Unreachable) throw new ArgumentException("Destination is unreachable");
-        return (int)result;
-    }
+    public int HopCount(Node destination) => (int)Cost(destination, Link.FewestHops);
 
-    public double Cost(Node destination) {
-        var result = Cost(destination, NoVisitedNodes, Link.LeastCost);
+    public double Cost(Node destination) => Cost(destination, Link.LeastCost);
+
+    private double Cost(Node destination, Link.CostStrategy strategy) {
+        var result = Cost(destination, NoVisitedNodes, strategy);
         if (result == Unreachable) throw new ArgumentException("Destination is unreachable");
         return result;
     }
