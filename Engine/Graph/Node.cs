@@ -21,9 +21,7 @@ public class Node {
         if (this == destination) return true;
         if (visitedNodes.Contains(this)) return false;
         visitedNodes.Add(this);
-        foreach (var n in _neighbors)
-            if (n.CanReach(destination, visitedNodes)) return true;
-        return false;
+        return _neighbors.Any(n => n.CanReach(destination, visitedNodes));
     }
     
     private List<Node> NoVisitedNodes() => new();
