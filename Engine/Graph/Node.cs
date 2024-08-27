@@ -10,7 +10,6 @@ namespace Engine.Graph;
 
 // Understands its neighbors
 public class Node {
-    private const double Unreachable = double.PositiveInfinity;
     private static readonly List<Node> NoVisitedNodes = new();
 
     private readonly List<Link> _links = new();
@@ -37,18 +36,6 @@ public class Node {
                    .Select(l => l.Path(destination, CopyWithThis(visitedNodes), strategy))
                    .MinBy(strategy.Invoke)
                ?? None;
-    }
-
-    private double Cost(Node destination, Link.CostStrategy strategy) {
-        var result = Cost(destination, NoVisitedNodes, strategy);
-        if (result == Unreachable) throw new ArgumentException("Destination is unreachable");
-        return result;
-    }
-
-    internal double Cost(Node destination, List<Node> visitedNodes, Link.CostStrategy strategy) {
-        if (this == destination) return 0.0;
-        if (visitedNodes.Contains(this) || _links.Count == 0) return Unreachable;
-        return _links.Min(n => n.Cost(destination, CopyWithThis(visitedNodes), strategy));
     }
 
     private List<Node> CopyWithThis(List<Node> originals) => [..originals, this];

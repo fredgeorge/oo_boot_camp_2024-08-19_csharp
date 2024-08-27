@@ -24,9 +24,6 @@ internal class Link {
         _target = target;
     }
 
-    internal double Cost(Node destination, List<Node> visitedNodes, CostStrategy strategy) => 
-        _target.Cost(destination, visitedNodes, strategy) + strategy(_cost);
-
     internal Path Path(Node destination, List<Node> visitedNodes, PathStrategy strategy) {
         return _target.Path(destination, visitedNodes, strategy).Prepend(this);
     }
