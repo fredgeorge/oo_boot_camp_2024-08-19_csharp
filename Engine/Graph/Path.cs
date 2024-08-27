@@ -8,13 +8,14 @@ namespace Engine.Graph;
 
 // Understands a specific route from one Node to another
 public abstract class Path {
+    internal static readonly Path None = new NoPath();
 
     internal virtual Path Prepend(Link link) => this;
 
     public abstract double Cost();
-    
+
     public abstract int HopCount();
-    
+
     internal class ActualPath : Path {
         private readonly List<Link> _links = new();
 
@@ -22,9 +23,14 @@ public abstract class Path {
             _links.Insert(0, link);
             return this;
         }
-    
+
         public override double Cost() => Link.TotalCost(_links);
-    
+
         public override int HopCount() => _links.Count;
+    }
+
+    private class NoPath : Path {
+        public override double Cost() => double.PositiveInfinity;
+        public override int HopCount() => int.MaxValue;
     }
 }

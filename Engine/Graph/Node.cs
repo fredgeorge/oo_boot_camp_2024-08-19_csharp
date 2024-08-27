@@ -14,7 +14,7 @@ public class Node {
     private readonly List<Link> _links = new();
 
     public bool CanReach(Node destination) => 
-        Cost(destination, NoVisitedNodes, Link.LeastCost) != Unreachable;
+        Path(destination, NoVisitedNodes) != Graph.Path.None;
 
     public int HopCount(Node destination) => (int)Cost(destination, Link.FewestHops);
 
@@ -22,18 +22,17 @@ public class Node {
 
     public Path Path(Node destination) {
         var result = Path(destination, NoVisitedNodes);
-        if (result == null) throw new ArgumentException("Destination is unreachable");
+        if (result == Graph.Path.None) throw new ArgumentException("Destination is unreachable");
         return result;
     }
 
-    internal Path? Path(Node destination, List<Node> visitedNodes) {
+    internal Path Path(Node destination, List<Node> visitedNodes) {
         if (this == destination) return new Path.ActualPath();
-        if (visitedNodes.Contains(this) || _links.Count == 0) return null;
-        Path champion = null;
+        if (visitedNodes.Contains(this)) return Graph.Path.None;
+        Path champion = Graph.Path.None;
         foreach (var link in _links) {
             var challenger = link.Path(destination, CopyWithThis(visitedNodes));
-            if (challenger == null) continue;
-            if (champion == null || challenger.Cost() < champion.Cost()) champion = challenger;
+            if (challenger.Cost() < champion.Cost()) champion = challenger;
         }
 
         return champion;
