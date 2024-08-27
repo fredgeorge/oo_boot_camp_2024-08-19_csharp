@@ -16,14 +16,16 @@ public class Node {
     private readonly List<Link> _links = new();
 
     public bool CanReach(Node destination) =>
-        Path(destination, NoVisitedNodes, LeastCost) != Graph.Path.None;
+        Path(destination, NoVisitedNodes, LeastCost) != None;
 
-    public int HopCount(Node destination) => (int)Cost(destination, Link.FewestHops);
+    public int HopCount(Node destination) => Path(destination, FewestHops).HopCount();
 
-    public double Cost(Node destination) => Cost(destination, Link.LeastCost);
+    public double Cost(Node destination) => Path(destination).Cost();
 
-    public Path Path(Node destination) {
-        var result = Path(destination, NoVisitedNodes, LeastCost);
+    public Path Path(Node destination) => Path(destination, LeastCost);
+
+    private Path Path(Node destination, PathStrategy strategy) {
+        var result = Path(destination, NoVisitedNodes, strategy);
         if (result == None) throw new ArgumentException("Destination is unreachable");
         return result;
     }
