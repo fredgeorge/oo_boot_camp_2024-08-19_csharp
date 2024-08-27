@@ -20,6 +20,25 @@ public class Node {
 
     public double Cost(Node destination) => Cost(destination, Link.LeastCost);
 
+    public Path Path(Node destination) {
+        var result = Path(destination, NoVisitedNodes);
+        if (result == null) throw new ArgumentException("Destination is unreachable");
+        return result;
+    }
+
+    internal Path Path(Node destination, List<Node> visitedNodes) {
+        if (this == destination) return new Path();
+        if (visitedNodes.Contains(this) || _links.Count == 0) return null;
+        Path champion = null;
+        foreach (var link in _links) {
+            var challenger = link.Path(destination, CopyWithThis(visitedNodes));
+            if (challenger == null) continue;
+            if (champion == null || challenger.Cost() < champion.Cost()) champion = challenger;
+        }
+
+        return champion;
+    }
+
     private double Cost(Node destination, Link.CostStrategy strategy) {
         var result = Cost(destination, NoVisitedNodes, strategy);
         if (result == Unreachable) throw new ArgumentException("Destination is unreachable");
