@@ -10,10 +10,10 @@ namespace Engine.Graph;
 public class Node {
     private const double Unreachable = double.PositiveInfinity;
     private static readonly List<Node> NoVisitedNodes = new();
-    
+
     private readonly List<Link> _links = new();
 
-    public bool CanReach(Node destination) => 
+    public bool CanReach(Node destination) =>
         Path(destination, NoVisitedNodes) != Graph.Path.None;
 
     public int HopCount(Node destination) => (int)Cost(destination, Link.FewestHops);
@@ -29,13 +29,10 @@ public class Node {
     internal Path Path(Node destination, List<Node> visitedNodes) {
         if (this == destination) return new Path.ActualPath();
         if (visitedNodes.Contains(this)) return Graph.Path.None;
-        Path champion = Graph.Path.None;
-        foreach (var link in _links) {
-            var challenger = link.Path(destination, CopyWithThis(visitedNodes));
-            if (challenger.Cost() < champion.Cost()) champion = challenger;
-        }
-
-        return champion;
+        return _links
+                   .Select(l => l.Path(destination, CopyWithThis(visitedNodes)))
+                   .MinBy(p => p.Cost())
+               ?? Graph.Path.None;
     }
 
     private double Cost(Node destination, Link.CostStrategy strategy) {
@@ -49,9 +46,9 @@ public class Node {
         if (visitedNodes.Contains(this) || _links.Count == 0) return Unreachable;
         return _links.Min(n => n.Cost(destination, CopyWithThis(visitedNodes), strategy));
     }
-    
+
     private List<Node> CopyWithThis(List<Node> originals) => [..originals, this];
-    
+
     public LinkBuilder Cost(double amount) => new LinkBuilder(amount, _links);
 
     public class LinkBuilder {
