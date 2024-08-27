@@ -4,6 +4,8 @@
  * @author Fred George  fredgeorge@acm.org
  */
 
+using static Engine.Graph.Path;
+
 namespace Engine.Graph;
 
 // Understands its neighbors
@@ -14,25 +16,25 @@ public class Node {
     private readonly List<Link> _links = new();
 
     public bool CanReach(Node destination) =>
-        Path(destination, NoVisitedNodes) != Graph.Path.None;
+        Path(destination, NoVisitedNodes, LeastCost) != Graph.Path.None;
 
     public int HopCount(Node destination) => (int)Cost(destination, Link.FewestHops);
 
     public double Cost(Node destination) => Cost(destination, Link.LeastCost);
 
     public Path Path(Node destination) {
-        var result = Path(destination, NoVisitedNodes);
-        if (result == Graph.Path.None) throw new ArgumentException("Destination is unreachable");
+        var result = Path(destination, NoVisitedNodes, LeastCost);
+        if (result == None) throw new ArgumentException("Destination is unreachable");
         return result;
     }
 
-    internal Path Path(Node destination, List<Node> visitedNodes) {
-        if (this == destination) return new Path.ActualPath();
-        if (visitedNodes.Contains(this)) return Graph.Path.None;
+    internal Path Path(Node destination, List<Node> visitedNodes, PathStrategy strategy) {
+        if (this == destination) return new ActualPath();
+        if (visitedNodes.Contains(this)) return None;
         return _links
-                   .Select(l => l.Path(destination, CopyWithThis(visitedNodes)))
-                   .MinBy(p => p.Cost())
-               ?? Graph.Path.None;
+                   .Select(l => l.Path(destination, CopyWithThis(visitedNodes), strategy))
+                   .MinBy(strategy.Invoke)
+               ?? None;
     }
 
     private double Cost(Node destination, Link.CostStrategy strategy) {

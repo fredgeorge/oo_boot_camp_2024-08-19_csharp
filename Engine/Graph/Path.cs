@@ -8,6 +8,9 @@ namespace Engine.Graph;
 
 // Understands a specific route from one Node to another
 public abstract class Path {
+    internal delegate double PathStrategy(Path path);
+    internal static readonly PathStrategy LeastCost = p => p.Cost();
+    
     internal static readonly Path None = new NoPath();
 
     internal virtual Path Prepend(Link link) => this;

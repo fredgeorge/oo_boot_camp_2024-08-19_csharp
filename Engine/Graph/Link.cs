@@ -4,6 +4,8 @@
  * @author Fred George  fredgeorge@acm.org
  */
 
+using static Engine.Graph.Path;
+
 namespace Engine.Graph;
 
 // Understands a connection from one Node to another
@@ -25,7 +27,7 @@ internal class Link {
     internal double Cost(Node destination, List<Node> visitedNodes, CostStrategy strategy) => 
         _target.Cost(destination, visitedNodes, strategy) + strategy(_cost);
 
-    internal Path Path(Node destination, List<Node> visitedNodes) {
-        return _target.Path(destination, visitedNodes).Prepend(this);
+    internal Path Path(Node destination, List<Node> visitedNodes, PathStrategy strategy) {
+        return _target.Path(destination, visitedNodes, strategy).Prepend(this);
     }
 }
