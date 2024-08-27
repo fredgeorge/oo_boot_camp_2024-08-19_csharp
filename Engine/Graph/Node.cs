@@ -26,8 +26,8 @@ public class Node {
         return result;
     }
 
-    internal Path Path(Node destination, List<Node> visitedNodes) {
-        if (this == destination) return new Path();
+    internal Path? Path(Node destination, List<Node> visitedNodes) {
+        if (this == destination) return new Path.ActualPath();
         if (visitedNodes.Contains(this) || _links.Count == 0) return null;
         Path champion = null;
         foreach (var link in _links) {
